@@ -17,7 +17,8 @@ from django.db.models.fields import FieldDoesNotExist
 from django.db.models.query_utils import select_related_descend, InvalidQuery
 from django.db.models.sql import aggregates as base_aggregates_module
 from django.db.models.sql.constants import *
-from django.db.models.sql.datastructures import EmptyResultSet, Empty, MultiJoin
+from django.db.models.sql.datastructures import EmptyResultSet, Empty, \
+    MultiJoin, PseudoJoin
 from django.db.models.sql.expressions import SQLEvaluator
 from django.db.models.sql.where import (WhereNode, Constraint, EverythingNode,
     ExtraWhere, AND, OR)
@@ -1054,6 +1055,13 @@ class Query(object):
             field, target, opts, join_list, last, extra_filters = self.setup_joins(
                     parts, opts, alias, True, allow_many, can_reuse=can_reuse,
                     negate=negate, process_extras=process_extras)
+        except PseudoJoin, e:
+            join = (alias, 'dummy', 'dummy', e.field.attname)
+            alias = self.join(join, reuse=can_reuse, always_create=True)
+            self.unref_alias(alias)
+            can_reuse.add(alias)
+            e.field.handle_join(self, parts, alias, lookup_type, value)
+            return
         except MultiJoin, e:
             self.split_exclude(filter_expr, LOOKUP_SEP.join(parts[:e.level]),
                     can_reuse)
@@ -1379,6 +1387,8 @@ class Query(object):
                 self.update_dupe_avoidance(dupe_opts, dupe_col, to_avoid)
 
         if pos != len(names) - 1:
+            if hasattr(field, 'handle_join'):
+                raise PseudoJoin(field)
             if pos == len(names) - 2:
                 raise FieldError("Join on field %r not permitted. Did you misspell %r for the lookup type?" % (name, names[pos + 1]))
             else:

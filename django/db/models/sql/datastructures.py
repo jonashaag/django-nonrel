@@ -18,6 +18,14 @@ class MultiJoin(Exception):
     def __init__(self, level):
         self.level = level
 
+class PseudoJoin(Exception):
+    """
+    Raised to indicate that the field the join syntax is used on
+    wants to handle the join (embedded object queries).
+    """
+    def __init__(self, field):
+        self.field = field
+
 class Empty(object):
     pass
 
