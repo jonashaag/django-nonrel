@@ -173,6 +173,7 @@ class BaseDatabaseFeatures(object):
     _confirmed = False
     supports_transactions = None
     supports_stddev = None
+    can_introspect_foreign_keys = None
 
     def __init__(self, connection):
         self.connection = connection
@@ -182,6 +183,7 @@ class BaseDatabaseFeatures(object):
         self._confirmed = True
         self.supports_transactions = self._supports_transactions()
         self.supports_stddev = self._supports_stddev()
+        self.can_introspect_foreign_keys = self._can_introspect_foreign_keys()
 
     def _supports_transactions(self):
         "Confirm support for transactions"
@@ -205,6 +207,12 @@ class BaseDatabaseFeatures(object):
             self.connection.ops.check_aggregate_support(StdDevPop())
         except NotImplementedError:
             self.supports_stddev = False
+
+    def _can_introspect_foreign_keys(self):
+        "Confirm support for introspected foreign keys"
+        # Every database can do this reliably, except MySQL,
+        # which can't do it for MyISAM tables
+        return True
 
 
 class BaseDatabaseOperations(object):
