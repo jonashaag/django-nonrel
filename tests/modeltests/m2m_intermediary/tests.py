@@ -1,10 +1,11 @@
 from datetime import datetime
 
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Reporter, Article, Writer
 
 
+@skipUnlessDBFeature('supports_joins')
 class M2MIntermediaryTests(TestCase):
     def test_intermeiary(self):
         r1 = Reporter.objects.create(first_name="John", last_name="Smith")

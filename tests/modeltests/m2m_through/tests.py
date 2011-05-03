@@ -1,12 +1,13 @@
 from datetime import datetime
 from operator import attrgetter
 
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Person, Group, Membership, CustomMembership, \
     TestNoDefaultsOrNulls, PersonSelfRefM2M, Friendship
 
 
+@skipUnlessDBFeature('supports_joins')
 class M2mThroughTests(TestCase):
     def setUp(self):
         self.bob = Person.objects.create(name='Bob')

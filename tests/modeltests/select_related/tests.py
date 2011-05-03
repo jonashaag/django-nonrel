@@ -1,7 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Domain, Kingdom, Phylum, Klass, Order, Family, Genus, Species
 
+@skipUnlessDBFeature('supports_select_related')
 class SelectRelatedTests(TestCase):
 
     def create_tree(self, stringtree):

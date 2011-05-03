@@ -1,10 +1,11 @@
 from operator import attrgetter
 
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Person
 
 
+@skipUnlessDBFeature('supports_joins')
 class RecursiveM2MTests(TestCase):
     def test_recursive_m2m(self):
         a, b, c, d = [

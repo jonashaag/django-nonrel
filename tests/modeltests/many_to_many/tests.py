@@ -1,6 +1,7 @@
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 from models import Article, Publication
 
+@skipUnlessDBFeature('supports_joins')
 class ManyToManyTests(TestCase):
 
     def setUp(self):

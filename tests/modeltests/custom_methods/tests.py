@@ -1,10 +1,11 @@
 from datetime import date
 
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Article
 
 
+@skipUnlessDBFeature('uses_sql')
 class MethodsTests(TestCase):
     def test_custom_methods(self):
         a = Article.objects.create(

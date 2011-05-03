@@ -1,11 +1,12 @@
 from datetime import date
 
 from django.db.models.sql.query import InvalidQuery
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Author, Book, Coffee, Reviewer, FriendlyAuthor
 
 
+@skipUnlessDBFeature('uses_sql')
 class RawQueryTests(TestCase):
     fixtures = ['raw_query_books.json']
 

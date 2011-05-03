@@ -1,11 +1,12 @@
 from django.contrib.contenttypes.generic import generic_inlineformset_factory
 from django.contrib.contenttypes.models import ContentType
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import (TaggedItem, ValuableTaggedItem, Comparison, Animal,
     Vegetable, Mineral)
 
 
+@skipUnlessDBFeature('supports_joins')
 class GenericRelationsTests(TestCase):
     def test_generic_relations(self):
         # Create the world in 7 lines of code...

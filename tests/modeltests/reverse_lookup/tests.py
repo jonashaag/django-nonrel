@@ -1,8 +1,9 @@
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 from django.core.exceptions import FieldError
 
 from models import User, Poll, Choice
 
+@skipUnlessDBFeature('supports_joins')
 class ReverseLookupTests(TestCase):
 
     def setUp(self):

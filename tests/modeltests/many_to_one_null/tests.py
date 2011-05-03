@@ -1,6 +1,7 @@
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 from models import Reporter, Article
 
+@skipUnlessDBFeature('supports_joins')
 class ManyToOneNullTests(TestCase):
 
     def setUp(self):

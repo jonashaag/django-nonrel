@@ -1,8 +1,9 @@
 from datetime import datetime
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 from django.core.exceptions import FieldError
 from models import Article, Reporter
 
+@skipUnlessDBFeature('supports_joins')
 class ManyToOneTests(TestCase):
 
     def setUp(self):

@@ -280,6 +280,7 @@ class BaseDatabaseFeatures(object):
     related_fields_match_type = False
     allow_sliced_subqueries = True
 
+    uses_sql = True
     supports_joins = True
     distinguishes_insert_from_update = True
     supports_deleting_related_objects = True

@@ -3,11 +3,12 @@ Testing signals emitted on changing m2m relations.
 """
 
 from django.db import models
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Part, Car, SportsCar, Person
 
 
+@skipUnlessDBFeature('supports_joins')
 class ManyToManySignalsTest(TestCase):
     def m2m_changed_signal_receiver(self, signal, sender, **kwargs):
         message = {

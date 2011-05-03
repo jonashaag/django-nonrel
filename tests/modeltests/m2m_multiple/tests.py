@@ -1,10 +1,11 @@
 from datetime import datetime
 
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Article, Category
 
 
+@skipUnlessDBFeature('supports_joins')
 class M2MMultipleTests(TestCase):
     def test_multiple(self):
         c1, c2, c3, c4 = [

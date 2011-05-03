@@ -1,7 +1,7 @@
 from operator import attrgetter
 
 from django.core.exceptions import FieldError
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import (Chef, CommonInfo, ItalianRestaurant, ParkingLot, Place,
     Post, Restaurant, Student, StudentWorker, Supplier, Worker, MixinModel)
@@ -69,6 +69,7 @@ class ModelInheritanceTests(TestCase):
             StudentWorker.objects.get, pk__lt=sw2.pk + 100
         )
 
+    @skipUnlessDBFeature('supports_joins')
     def test_multiple_table(self):
         post = Post.objects.create(title="Lorem Ipsum")
         # The Post model has distinct accessors for the Comment and Link models.

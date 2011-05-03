@@ -1,9 +1,10 @@
 from django.db.models import Q
-from django.test import TestCase
+from django.test import TestCase, skipUnlessDBFeature
 
 from models import Issue, User
 
 
+@skipUnlessDBFeature('supports_joins')
 class RelatedObjectTests(TestCase):
     def test_m2m_and_m2o(self):
         r = User.objects.create(username="russell")
